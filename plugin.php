@@ -34,7 +34,7 @@ if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 	// to see if the Composer dependencies have been installed in a parent
 	// folder. This is useful for when the plugin is loaded as a Composer
 	// dependency in a larger project.
-	if ( ! class_exists( \Composer\InstalledVersions::class ) ) {
+	if ( ! class_exists( Example_Plugin::class ) ) {
 		\add_action(
 			'admin_notices',
 			function () {
