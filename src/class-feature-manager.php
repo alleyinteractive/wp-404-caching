@@ -2,10 +2,10 @@
 /**
  * Class to manage plugin features.
  *
- * @package create-wordpress-plugin
+ * @package wp-404-caching
  */
 
-namespace Create_WordPress_Plugin;
+namespace Alley\WP\WP_404_Caching;
 
 use Alley\WP\Types\Feature;
 

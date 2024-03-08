@@ -1,21 +1,21 @@
 <?php
 /**
- * Plugin Name: Create WordPress Plugin
- * Plugin URI: https://github.com/alleyinteractive/create-wordpress-plugin
- * Description: A skeleton WordPress plugin
+ * Plugin Name: WP 404 Caching
+ * Plugin URI: https://github.com/alleyinteractive/wp-404-caching
+ * Description: Full Page Cache for WordPress 404s
  * Version: 0.0.0
- * Author: author_name
- * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
+ * Author: Alley
+ * Author URI: https://github.com/alleyinteractive/wp-404-caching
  * Requires at least: 5.9
  * Tested up to: 6.2
  *
- * Text Domain: create-wordpress-plugin
+ * Text Domain: wp-404-caching
  * Domain Path: /languages/
  *
- * @package create-wordpress-plugin
+ * @package wp-404-caching
  */
 
-namespace Create_WordPress_Plugin;
+namespace Alley\WP\WP_404_Caching;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -24,9 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Root directory to this plugin.
  */
-define( 'CREATE_WORDPRESS_PLUGIN_DIR', __DIR__ );
-
-/* Start Composer Loader */
+define( 'WP_404_CACHING_DIR', __DIR__ );
 
 // Check if Composer is installed (remove if Composer is not required for your plugin).
 if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
@@ -40,7 +38,7 @@ if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 			function () {
 				?>
 				<div class="notice notice-error">
-					<p><?php esc_html_e( 'Composer is not installed and create-wordpress-plugin cannot load. Try using a `*-built` branch if the plugin is being loaded as a submodule.', 'create-wordpress-plugin' ); ?></p>
+					<p><?php esc_html_e( 'Composer is not installed and wp-404-caching cannot load. Try using a `*-built` branch if the plugin is being loaded as a submodule.', 'wp-404-caching' ); ?></p>
 				</div>
 				<?php
 			}
@@ -52,8 +50,6 @@ if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 	// Load Composer dependencies.
 	require_once __DIR__ . '/vendor/wordpress-autoload.php';
 }
-
-/* End Composer Loader */
 
 // Load the plugin's main files.
 require_once __DIR__ . '/src/assets.php';
@@ -67,7 +63,7 @@ function main(): void {
 	$features = [
 		// Add initial features here.
 	];
-	$features = apply_filters( 'create_wordpress_plugin_features', $features );
+	$features = apply_filters( 'wp_404_caching_features', $features );
 	Feature_Manager::add_features( $features );
 }
 main();

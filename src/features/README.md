@@ -1,7 +1,7 @@
 # Features
 Features should be PHP classes that implement the [Alley\WP\Types\Feature interface](https://github.com/alleyinteractive/wp-type-extensions/blob/main/src/alley/wp/types/interface-feature.php).
 
-Features should be located in the `src/features` directory of the plugin and have namespace `Create_WordPress_Plugin\Features;`
+Features should be located in the `src/features` directory of the plugin and have namespace `Alley\WP\WP_404_Caching\Features;`
 
 Files in the features directory will be autoloaded, but features will not be instantiated. Features are instantiated via the `Feature_Manager` static class.
 
@@ -26,7 +26,7 @@ $lyrics = "Hello, Dolly
 ### Add a feature using the `add_features` method
 ```
 $features = [
-    'Create_WordPress_Plugin\Features\Hello' => [ 'lyrics' => $lyrics ],
+    'Alley\WP\WP_404_Caching\Features\Hello' => [ 'lyrics' => $lyrics ],
 ];
 
 Feature_Manager::add_features( $features );
@@ -34,16 +34,16 @@ Feature_Manager::add_features( $features );
 
 > 💡 If you `apply_filters` to the features array before passing it to `add_features`, you can modify it with a filter.
 ```
-$features = apply_filters( 'create_wordpress_plugin_features', $features );
+$features = apply_filters( 'wp_404_caching_features', $features );
 ```
 
 ### Add a feature using the `add_feature` method
 ```
-Feature_Manager::add_feature( 'Create_WordPress_Plugin\Features\Hello', [ 'lyrics' => $lyrics ] );
+Feature_Manager::add_feature( 'Alley\WP\WP_404_Caching\Features\Hello', [ 'lyrics' => $lyrics ] );
 ```
 ## Get the instance of an added feature with the `get_feature` method
 ```
-$hello_feature = Feature_Manager::get_feature( 'Create_WordPress_Plugin\Features\Hello' );
+$hello_feature = Feature_Manager::get_feature( 'Alley\WP\WP_404_Caching\Features\Hello' );
 ```
 ## Once we have the instance, we can remove hooks from inside the instance
 ```
@@ -57,10 +57,10 @@ This is a port of the infamous WordPress `hello.php` plugin to a feature. The ly
 /**
  * Feature implementation of hello.php
  *
- * @package Create_WordPress_Plugin
+ * @package Alley\WP\WP_404_Caching
  */
 
-namespace Create_WordPress_Plugin\Features;
+namespace Alley\WP\WP_404_Caching\Features;
 
 use Alley\WP\Types\Feature;
 

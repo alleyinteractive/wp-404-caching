@@ -1,17 +1,17 @@
 {
-    "name": "alleyinteractive/create-wordpress-plugin",
-    "description": "A skeleton WordPress plugin",
+    "name": "alleyinteractive/wp-404-caching",
+    "description": "Full Page Cache for WordPress 404s",
     "type": "wordpress-plugin",
     "keywords": [
         "alleyinteractive",
-        "create-wordpress-plugin"
+        "wp-404-caching"
     ],
-    "homepage": "https://github.com/alleyinteractive/create-wordpress-plugin",
+    "homepage": "https://github.com/alleyinteractive/wp-404-caching",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
-            "name": "author_name",
-            "email": "email@domain.com"
+            "name": "Alley",
+            "email": "info@alley.com"
         }
     ],
     "require": {
@@ -34,16 +34,16 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Create_WordPress_Plugin\\Tests\\": "tests"
+            "Alley\WP\WP_404_Caching\\Tests\\": "tests"
         }
     },
     "extra": {
         "wordpress-autoloader": {
             "autoload": {
-                "Create_WordPress_Plugin\\": "src"
+                "Alley\\WP\\WP_404_Caching": "src"
             },
             "autoload-dev": {
-                "Create_WordPress_Plugin\\Tests\\": "tests"
+                "Alley\\WP\\WP_404_Caching\\Tests": "tests"
             }
         }
     },

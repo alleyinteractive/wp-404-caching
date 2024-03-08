@@ -1,7 +1,7 @@
 {
   "core_term_meta": true,
-  "domain": "create-wordpress-plugin",
+  "domain": "wp-404-caching",
   "folder": "src",
-  "namespace": "Create_WordPress_Plugin",
+  "namespace": "Alley\WP\WP_404_Caching",
   "require_path": "__DIR__"
 }

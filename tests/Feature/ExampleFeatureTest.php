@@ -1,13 +1,13 @@
 <?php
 /**
- * Create WordPress Plugin Tests: Example Feature Test
+ * WP 404 Caching Tests: Example Feature Test
  *
- * @package create-wordpress-plugin
+ * @package wp-404-caching
  */
 
-namespace Create_WordPress_Plugin\Tests\Feature;
+namespace Alley\WP\WP_404_Caching\Tests\Feature;
 
-use Create_WordPress_Plugin\Tests\TestCase;
+use Alley\WP\WP_404_Caching\Tests\TestCase;
 
 /**
  * A test suite for an example feature.

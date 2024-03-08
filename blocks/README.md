@@ -10,7 +10,7 @@ Custom blocks in this directory can be created by running the `create-block` scr
 
 The `create-block` script will create the block files in a the block directory using the `slug` field entered from the prompts when scaffolding the block.
 
-The script uses the [@alleyinteractive/create-block](https://github.com/alleyinteractive/alley-scripts/tree/main/packages/create-block) script with the `--namespace` flag for scaffolding block files with the plugin namespace of `create-wordpress-plugin`. See the `create-block` script in `package.json`.
+The script uses the [@alleyinteractive/create-block](https://github.com/alleyinteractive/alley-scripts/tree/main/packages/create-block) script with the `--namespace` flag for scaffolding block files with the plugin namespace of `wp-404-caching`. See the `create-block` script in `package.json`.
 
 For **dynmanic blocks** the following files will be generated:
 

@@ -4,10 +4,10 @@
  *
  * phpcs:disable phpcs:ignore Squiz.PHP.CommentedOutCode.Found
  *
- * @package create-wordpress-plugin
+ * @package wp-404-caching
  */
 
-namespace Create_WordPress_Plugin;
+namespace Alley\WP\WP_404_Caching;
 
 /**
  * Validate file paths to prevent a PHP error if a file doesn't exist.
@@ -31,7 +31,7 @@ function get_entry_dir_path( string $dir_entry_name, bool $dir = false ): string
 	// The relative path from the plugin root.
 	$asset_build_dir = "/build/{$dir_entry_name}/";
 	// Set the absolute file path from the root directory.
-	$asset_dir_path = CREATE_WORDPRESS_PLUGIN_DIR . $asset_build_dir;
+	$asset_dir_path = WP_404_CACHING_DIR . $asset_build_dir;
 
 	if ( validate_path( $asset_dir_path ) ) {
 		// Negotiate the base path.
@@ -115,7 +115,7 @@ function get_entry_asset_url( string $dir_entry_name, $filename = 'index.js' ) {
  * Load the php index files from the build directory for blocks, slotfills, and any other scripts with an index.php file.
  */
 function load_scripts(): void {
-	$files = glob( CREATE_WORDPRESS_PLUGIN_DIR . '/build/**/index.php' );
+	$files = glob( WP_404_CACHING_DIR . '/build/**/index.php' );
 
 	if ( ! empty( $files ) ) {
 		foreach ( $files as $path ) {

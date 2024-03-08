@@ -1,7 +1,7 @@
 {
-  "name": "create-wordpress-plugin",
+  "name": "wp-404-caching",
   "license": "GPL-2.0-or-later",
-  "main": "plugin.php",
+  "main": "wp-404-caching.php",
   "engines": {
     "node": "16",
     "npm": "8"
@@ -12,9 +12,9 @@
   ],
   "scripts": {
     "build": "alley-build build",
-    "create-block": "npx @alleyinteractive/create-block@latest -n create-wordpress-plugin",
-    "create-entry": "npx @alleyinteractive/create-entry@latest -n create-wordpress-plugin -t create-wordpress-plugin",
-    "create-slotfill": "npx @alleyinteractive/create-entry -s -n create-wordpress-plugin -t create-wordpress-plugin",
+    "create-block": "npx @alleyinteractive/create-block@latest -n wp-404-caching",
+    "create-entry": "npx @alleyinteractive/create-entry@latest -n wp-404-caching -t wp-404-caching",
+    "create-slotfill": "npx @alleyinteractive/create-entry -s -n wp-404-caching -t wp-404-caching",
     "precheck-types": "check-node-version --package",
     "check-types": "tsc",
     "lint:fix": "eslint --ext .jsx --ext .js --ext .ts --ext .tsx . --fix",

@@ -9,7 +9,7 @@ parameters:
 		- blocks/
 		- entries/
 		- src/
-		- plugin.php
+		- wp-404-caching.php
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
