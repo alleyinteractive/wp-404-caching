@@ -32,7 +32,7 @@ composer require alleyinteractive/wp-404-caching
 Activate the plugin in WordPress and use it like so:
 
 ```php
-$plugin = Alley\WP\WP_404_Caching\WP_404_Caching\WP_404_Caching();
+$plugin = Alley\WP\WP_404_Caching\WP_404_Caching();
 $plugin->perform_magic();
 ```
 
@@ -128,7 +128,6 @@ Interactive](https://github.com/alleyinteractive). Like what you see? [Come work
 with us](https://alley.co/careers/).
 
 - [Alley](https://github.com/Alley)
-- [All Contributors](../../contributors)
 
 ## License
 
