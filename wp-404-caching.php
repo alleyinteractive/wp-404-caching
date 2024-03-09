@@ -6,8 +6,8 @@
  * Version: 0.0.0
  * Author: Alley
  * Author URI: https://github.com/alleyinteractive/wp-404-caching
- * Requires at least: 5.9
- * Tested up to: 6.2
+ * Requires at least: 6.4
+ * Tested up to: 6.5
  *
  * Text Domain: wp-404-caching
  * Domain Path: /languages/
