@@ -8,8 +8,18 @@
 namespace Alley\WP\WP_404_Caching;
 
 /**
- * Example Plugin
+ * Main plugin class
  */
 class WP_404_Caching {
 
+	/**
+	 * Constructor
+	 */
+	private function __construct() {
+		Feature_Manager::add_features(
+			[
+				'Alley\WP\WP_404_Caching\Features\Full_Page_Cache_404' => [],
+			]
+		);
+	}
 }
