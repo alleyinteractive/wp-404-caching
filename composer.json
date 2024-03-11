@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Alley\WP\WP_404_Caching\\Tests\\": "tests"
+            "Alley\\WP\\WP_404_Caching\\Tests\\": "tests"
         }
     },
     "extra": {
