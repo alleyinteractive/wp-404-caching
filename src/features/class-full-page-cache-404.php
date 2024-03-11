@@ -164,7 +164,7 @@ final class Full_Page_Cache_404 implements Feature {
 	}
 
 	/**
-	 * Send X-WP_404_Caching HTTP Header.
+	 * Send X-WP-404-Cache HTTP Header.
 	 *
 	 * @param string $type HIT or MISS.
 	 * @param bool   $stale Whether the stale cache is in use. Default false.
@@ -176,11 +176,11 @@ final class Full_Page_Cache_404 implements Feature {
 		}
 
 		if ( ! $stale && 'HIT' === $type ) {
-			header( 'X-WP_404_Caching-404-Cache: HIT' );
+			header( 'X-WP-404-Cache: HIT' );
 		} elseif ( $stale && 'HIT' === $type ) {
-			header( 'X-WP_404_Caching-404-Cache: HIT (stale)' );
+			header( 'X-WP-404-Cache: HIT (stale)' );
 		} elseif ( 'MISS' === $type ) {
-			header( 'X-WP_404_Caching-404-Cache: MISS' );
+			header( 'X-WP-404-Cache: MISS' );
 		}
 	}
 

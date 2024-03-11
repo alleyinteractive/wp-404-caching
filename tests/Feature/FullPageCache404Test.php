@@ -22,7 +22,7 @@ use Mantle\Testing\Exceptions\Exception;
  *
  * @link https://mantle.alley.com/testing/test-framework.html
  */
-class Test_Full_Page_Cache_404 extends TestCase {
+final class FullPageCache404Test extends TestCase {
 	use Refresh_Database;
 	use Admin_Screen;
 
@@ -215,7 +215,7 @@ class Test_Full_Page_Cache_404 extends TestCase {
 		$post_id  = self::factory()->post->create( [ 'post_title' => 'Hello World' ] );
 		$response = $this->get( get_the_permalink( $post_id ) );
 		$response->assertStatus( 200 );
-		$response->assertHeaderMissing( 'X-Alleyvate-404-Cache' );
+		$response->assertHeaderMissing( 'X-WP-404-Cache' );
 		$response->assertSee( 'Hello World' );
 
 		$this->assertFalse(
