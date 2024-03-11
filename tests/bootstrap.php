@@ -11,6 +11,7 @@
  * Visit {@see https://mantle.alley.com/testing/test-framework.html} to learn more.
  */
 \Mantle\Testing\manager()
+	->with_object_cache()
 	// Rsync the plugin to plugins/wp-404-caching when testing.
 	->maybe_rsync_plugin()
 	// Load the main file of the plugin.
