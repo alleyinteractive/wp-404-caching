@@ -25,7 +25,7 @@ class Feature_Manager {
 	 *
 	 * @param array $features_to_create Array of feature classnames and arguments.
 	 *
-	 * @phpstan-param array{string: array{string?: mixed}}|array{} $features_to_create
+	 * @phpstan-param array<string, array{string?: mixed}>|array{} $features_to_create
 	 */
 	public static function add_features( array $features_to_create = [] ): void {
 		foreach ( $features_to_create as $feature_class => $args ) {
