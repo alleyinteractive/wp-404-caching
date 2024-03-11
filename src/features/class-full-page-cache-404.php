@@ -143,7 +143,7 @@ final class Full_Page_Cache_404 implements Feature {
 			$stale_cache_in_use = true;
 		}
 
-		if ( ! empty( $cache ) ) {
+		if ( ! empty( $cache ) && is_string( $cache ) ) {
 			$html = self::prepare_response( $cache );
 
 			self::send_header( 'HIT', $stale_cache_in_use );
