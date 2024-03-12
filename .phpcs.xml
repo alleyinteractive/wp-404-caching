@@ -38,6 +38,7 @@
       <property name="prefixes" type="array">
         <element value="alleyinteractive" />
         <element value="wp_404_caching" />
+        <element value="wp_404_cache" />
         <element value="Alley_WP_WP_404_Caching" />
       </property>
     </properties>
