@@ -1,40 +1,61 @@
 # WP 404 Caching
 
-Contributors: alleyinteractive
-
-Tags: alleyinteractive, wp-404-caching
-
-Stable tag: 0.0.0
-
-Requires at least: 6.4
-
-Tested up to: 6.5
-
-Requires PHP: 8.1
-
-License: GPL v2 or later
-
 [![Coding Standards](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/coding-standards.yml)
 [![Testing Suite](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/unit-test.yml/badge.svg)](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/unit-test.yml)
 
-Full Page Cache for WordPress 404s.
+A WordPress plugin to provide full page caching for 404 pages, improving performance and reducing server load.
+
+- **Contributors**: alleyinteractive
+- **Tags**: alleyinteractive, wp-404-caching
+- **Stable tag**: 1.0.0
+
+## Requirements
+- SSL enabled on the website.
+- An external object cache setup (e.g., Redis, Memcached).
+- Requires at least: 6.4
+- Tested up to: 6.5
+- Requires PHP: 8.1
+- License: GPL v2 or later
+
+## Description
+
+WP 404 Caching is a lightweight plugin that efficiently serves cached 404 pages to non-logged-in users. It reduces server load by storing the cached 404 page in an external object cache and returning it early in the request process.
+
+The plugin uses a dual regular/stale caching strategy to minimize cache misses. It maintains a regular cache with a 1-hour expiration and a stale cache with a 1-day expiration. If the regular cache is empty, the stale cache is served.
+
+## Features
+
+- Full page caching for 404 pages
+- Utilizes external object cache for storing cached 404 pages
+- Dual regular/stale caching strategy to minimize cache misses
+- Automatically generates and caches 404 page via a "guaranteed 404 URI"
+- Triggers cache generation hourly via a cron job and immediately on cache misses
+- Sends `X-WP-404-Cache` header to indicate cache HIT/MISS status
+- Ensures compatibility with analytics by replacing the "guaranteed 404 URI" with the actual requested URI in the cached page
 
 ## Installation
+### Via Composer (recommeded):
 
 You can install the package via composer:
 
 ```bash
 composer require alleyinteractive/wp-404-caching
 ```
+### Manual install:
+
+1. Upload the `wp-404-caching` directory to your `/wp-content/plugins/` directory.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 ## Usage
-
+The plugin works out of the box with default settings. You can customize the cache expiration times by modifying the `CACHE_TIME` and `STALE_CACHE_TIME` constants in the `Full_Page_Cache_404` class.
 Activate the plugin in WordPress and use it like so:
 
 ```php
 $plugin = Alley\WP\WP_404_Caching\WP_404_Caching();
 $plugin->perform_magic();
 ```
+
+# Developer Notes
 
 ## Testing
 
@@ -45,40 +66,6 @@ Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
 happen when running development or production builds.
 
 Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
-
-### The `entries` directory and entry points
-
-All directories created in the `entries` directory can serve as entry points and will be compiled with [@wordpress/scripts](https://github.com/WordPress/gutenberg/blob/trunk/packages/scripts/README.md#scripts) into the `build` directory with an accompanied `index.asset.php` asset map.
-
-#### Scaffolding an entry point
-
-To generate a new entry point, run the following command:
-
-```sh
-npm run create-entry
-```
-
-To generate a new slotfill, run the following command:
-
-```sh
-npm run create-slotfill
-```
-
-The command will prompt the user through several options for creating an entry or slotfill. The entries are scaffolded with the `@alleyinteractive/create-entry` script. Run the help command to see all the options:
-
-```sh
-npx @alleyinteractive/create-entry --help
-```
-[Visit the package README](https://www.npmjs.com/package/@alleyinteractive/create-entry) for more information.
-
-#### Enqueuing Entry Points
-
-You can also include an `index.php` file in the entry point directory for enqueueing or registering a script. This file will then be moved to the build directory and will be auto-loaded with the `load_scripts()` function in the `functions.php` file. Alternatively, if a script is to be enqueued elsewhere there are helper functions in the `src/assets.php` file for getting the assets.
-
-### Scaffold a dynamic block with `create-block`
-
-Use the `create-block` command to create custom blocks with [@alleyinteractive/create-block](https://github.com/alleyinteractive/alley-scripts/tree/main/packages/create-block) script and follow the prompts to generate all the block assets in the `blocks/` directory.
-Block registration, script creation, etc will be scaffolded from the `create-block` script. Run `npm run build` to compile and build the custom block. Blocks are enqueued using the `load_scripts()` function in `src/assets.php`.
 
 ### Updating WP Dependencies
 
