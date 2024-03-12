@@ -60,12 +60,44 @@ final class Full_Page_Cache_404 implements Feature {
 	public const STALE_CACHE_TIME = DAY_IN_SECONDS;
 
 	/**
+	 * Cache time.
+	 *
+	 * @var int
+	 */
+	public const DEFAULT_CACHE_TIME = HOUR_IN_SECONDS;
+
+	/**
+	 * Stale cache time.
+	 *
+	 * @var int
+	 */
+	public const DEFAULT_STALE_CACHE_TIME = DAY_IN_SECONDS;
+
+	/**
 	 * Guaranteed 404 URI.
 	 * Used for populating the cache.
 	 *
 	 * @var string
 	 */
 	public const TEMPLATE_GENERATOR_URI = '/wp-404-caching/404-template-generator/?generate=1&uri=1';
+
+	/**
+	 * Get cache time.
+	 *
+	 * @return int
+	 */
+	public static function get_cache_time(): int {
+		return apply_filters( 'wp_404_caching_cache_time', self::DEFAULT_CACHE_TIME );
+	}
+
+	/**
+	 * Get stale cache time.
+	 *
+	 * @return int
+	 */
+	public static function get_stale_cache_time(): int {
+		return apply_filters( 'wp_404_caching_stale_cache_time', self::DEFAULT_STALE_CACHE_TIME );
+	}
 
 	/**
 	 * Boot the feature.
@@ -254,8 +286,8 @@ final class Full_Page_Cache_404 implements Feature {
 	 * @param string $buffer The Output Buffer.
 	 */
 	public static function set_cache( string $buffer ): void {
-		wp_cache_set( self::CACHE_KEY, $buffer, self::CACHE_GROUP, self::CACHE_TIME ); // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.CacheTimeUndetermined
-		wp_cache_set( self::STALE_CACHE_KEY, $buffer, self::CACHE_GROUP, self::STALE_CACHE_TIME ); // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.CacheTimeUndetermined
+		wp_cache_set( self::CACHE_KEY, $buffer, self::CACHE_GROUP, self::get_cache_time() ); // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.CacheTimeUndetermined
+		wp_cache_set( self::STALE_CACHE_KEY, $buffer, self::CACHE_GROUP, self::get_stale_cache_time() );  // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.CacheTimeUndetermined
 	}
 
 	/**
