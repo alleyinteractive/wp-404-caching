@@ -251,7 +251,7 @@ final class Full_Page_Cache_404 implements Feature {
 	/**
 	 * Get cache.
 	 *
-	 * @return mixed
+	 * @return mixed The cache contents on success, false on failure to retrieve contents.
 	 */
 	public static function get_cache(): mixed {
 		return wp_cache_get( self::CACHE_KEY, self::CACHE_GROUP );
