@@ -6,8 +6,6 @@ parameters:
 	level: max
 
 	paths:
-		- blocks/
-		- entries/
 		- src/
 		- wp-404-caching.php
 
