@@ -46,13 +46,6 @@ final class Full_Page_Cache_404 implements Feature {
 	public const STALE_CACHE_KEY = '404_cache_stale';
 
 	/**
-	 * Stale cache time.
-	 *
-	 * @var int
-	 */
-	public const STALE_CACHE_TIME = DAY_IN_SECONDS;
-
-	/**
 	 * Cache time.
 	 *
 	 * @var int
@@ -129,13 +122,13 @@ final class Full_Page_Cache_404 implements Feature {
 	 */
 	public static function action__template_redirect(): void {
 
-		// Don't cache if user is logged in.
-		if ( is_user_logged_in() ) {
+		// Don't cache if not a 404.
+		if ( ! is_404() ) {
 			return;
 		}
 
-		// Don't cache if not a 404.
-		if ( ! is_404() ) {
+		// Don't cache if user is logged in.
+		if ( is_user_logged_in() ) {
 			return;
 		}
 
