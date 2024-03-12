@@ -85,7 +85,4 @@ The GNU General Public License (GPL) license. Please see [License File](LICENSE)
 Run `npm run test` to run Jest tests against JavaScript files. Run
 `npm run test:watch` to keep the test runner open and watching for changes.
 
-Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
-happen when running development or production builds.
-
 Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
