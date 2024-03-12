@@ -16,7 +16,6 @@ use Mantle\Testing\Concerns\Admin_Screen;
 use Mantle\Testing\Concerns\Refresh_Database;
 use Mantle\Testing\Exceptions\Exception;
 
-
 /**
  * A test suite for an example feature.
  *
@@ -316,5 +315,33 @@ final class FullPageCache404Test extends TestCase {
     </body>
     </html>
     HTML;
+	}
+
+	/**
+	 * Test that cache times can be modified via filters.
+	 */
+	public function test_cache_times_can_be_modified_via_filters(): void {
+		// Modify cache times via filters.
+		add_filter(
+			'wp_404_caching_cache_time',
+			function () {
+				return HOUR_IN_SECONDS * 2;
+			}
+		);
+
+		add_filter(
+			'wp_404_caching_stale_cache_time',
+			function () {
+				return DAY_IN_SECONDS * 2;
+			}
+		);
+
+		// Make sure that the cache times are modified.
+		$this->assertEquals( HOUR_IN_SECONDS * 2, $this->feature::get_cache_time() );
+		$this->assertEquals( DAY_IN_SECONDS * 2, $this->feature::get_stale_cache_time() );
+
+		// Cleanup.
+		remove_all_filters( 'wp_404_caching_cache_time' );
+		remove_all_filters( 'wp_404_caching_stale_cache_time' );
 	}
 }
