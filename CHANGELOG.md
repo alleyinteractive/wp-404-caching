@@ -1,7 +1,7 @@
 # Changelog
 
-All notable changes to `Create WordPress Plugin` will be documented in this file.
+All notable changes to `WP 404 Caching` will be documented in this file.
 
-## 0.1.0 - 202X-XX-XX
+## 1.0.1
 
 - Initial release

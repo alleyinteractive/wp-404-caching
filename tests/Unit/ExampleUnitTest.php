@@ -1,11 +1,11 @@
 <?php
 /**
- * Create WordPress Plugin Tests: Example Unit Test
+ * WP 404 Caching Tests: Example Unit Test
  *
- * @package create-wordpress-plugin
+ * @package wp-404-caching
  */
 
-namespace Create_WordPress_Plugin\Tests\Unit;
+namespace Alley\WP\WP_404_Caching\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 

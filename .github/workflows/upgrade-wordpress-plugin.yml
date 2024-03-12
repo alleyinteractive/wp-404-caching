@@ -15,5 +15,5 @@ jobs:
     - uses: actions/checkout@v4
     - uses: alleyinteractive/action-update-wordpress-plugin@v1.2.1
       with:
-        plugin-file: 'plugin.php'
+        plugin-file: 'wp-404-caching.php'
         upgrade-npm-dependencies: "true"
