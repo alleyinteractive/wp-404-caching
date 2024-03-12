@@ -46,13 +46,6 @@ final class Full_Page_Cache_404 implements Feature {
 	public const STALE_CACHE_KEY = '404_cache_stale';
 
 	/**
-	 * Cache time.
-	 *
-	 * @var int
-	 */
-	public const CACHE_TIME = HOUR_IN_SECONDS;
-
-	/**
 	 * Stale cache time.
 	 *
 	 * @var int
@@ -111,7 +104,7 @@ final class Full_Page_Cache_404 implements Feature {
 		 *
 		 * And only boot feature if the site is using SSL.
 		 */
-		if ( ! (bool) wp_using_ext_object_cache() || ! is_ssl() ) {
+		if ( ! wp_using_ext_object_cache() || ! is_ssl() ) {
 			return;
 		}
 
