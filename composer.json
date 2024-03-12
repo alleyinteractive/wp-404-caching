@@ -40,10 +40,10 @@
     "extra": {
         "wordpress-autoloader": {
             "autoload": {
-                "Alley\\WP\\WP_404_Caching": "src"
+                "Alley\\WP\\WP_404_Caching\\": "src"
             },
             "autoload-dev": {
-                "Alley\\WP\\WP_404_Caching\\Tests": "tests"
+                "Alley\\WP\\WP_404_Caching\\Tests\\": "tests"
             }
         }
     },
