@@ -60,6 +60,24 @@ add_filter( 'wp_404_caching_stale_cache_time', function( $stale_cache_time ) {
 } );
 ```
 
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## Credits
+
+This project is actively maintained by [Alley
+Interactive](https://github.com/alleyinteractive). Like what you see? [Come work
+with us](https://alley.co/careers/).
+
+- [Alley](https://github.com/Alley)
+
+## License
+
+The GNU General Public License (GPL) license. Please see [License File](LICENSE) for more information.
+
+---
+
 # Developer Notes
 
 ## Testing
@@ -87,14 +105,14 @@ This script provides the following custom options:
 -   `--dist-tag` – allows specifying a custom dist-tag when updating npm packages. Defaults to `latest`. This is especially useful when using [`@wordpress/dependency-extraction-webpack-plugin`](https://www.npmjs.com/package/@wordpress/dependency-extraction-webpack-plugin). It lets installing the npm dependencies at versions used by the given WordPress major version for local testing, etc. Example:
 
 ```sh
-npx wp-scripts packages-update --dist-tag=wp-WPVERSION`
+npx wp-scripts packages-update --dist-tag=wp-WPVERSION
 ```
 
 Where `WPVERSION` is the version of WordPress you are targeting. The version
 must include both the major and minor version (e.g., `6.5`). For example:
 
 ```sh
-npx wp-scripts packages-update --dist-tag=wp-6.5`
+npx wp-scripts packages-update --dist-tag=wp-6.5
 ```
 
 ## Releasing the Plugin
@@ -108,19 +126,3 @@ publishing to WordPress.org or for submodule-ing.
 
 When you are ready to release a new version of the plugin, you can run
 `npm run release` to start the process of setting up a new release.
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Credits
-
-This project is actively maintained by [Alley
-Interactive](https://github.com/alleyinteractive). Like what you see? [Come work
-with us](https://alley.co/careers/).
-
-- [Alley](https://github.com/Alley)
-
-## License
-
-The GNU General Public License (GPL) license. Please see [License File](LICENSE) for more information.
