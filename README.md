@@ -51,8 +51,13 @@ The plugin works out of the box with default settings. You can customize the cac
 Activate the plugin in WordPress and use it like so:
 
 ```php
-$plugin = Alley\WP\WP_404_Caching\WP_404_Caching();
-$plugin->perform_magic();
+add_filter( 'wp_404_caching_cache_time', function( $cache_time ) {
+    return 2 * HOUR_IN_SECONDS; // Set cache time to 2 hours.
+} );
+
+add_filter( 'wp_404_caching_stale_cache_time', function( $stale_cache_time ) {
+    return 2 * DAY_IN_SECONDS; // Set stale cache time to 2 days.
+} );
 ```
 
 # Developer Notes
