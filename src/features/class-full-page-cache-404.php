@@ -73,7 +73,7 @@ final class Full_Page_Cache_404 implements Feature {
 	 * @return int
 	 */
 	public static function get_cache_time(): int {
-		return apply_filters( 'wp_404_caching_cache_time', self::DEFAULT_CACHE_TIME );
+		return apply_filters( 'wp_404_caching_cache_time', self::DEFAULT_CACHE_TIME ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	/**
@@ -82,7 +82,7 @@ final class Full_Page_Cache_404 implements Feature {
 	 * @return int
 	 */
 	public static function get_stale_cache_time(): int {
-		return apply_filters( 'wp_404_caching_stale_cache_time', self::DEFAULT_STALE_CACHE_TIME );
+		return apply_filters( 'wp_404_caching_stale_cache_time', self::DEFAULT_STALE_CACHE_TIME ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	/**
