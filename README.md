@@ -58,6 +58,9 @@ add_filter( 'wp_404_caching_cache_time', function( $cache_time ) {
 add_filter( 'wp_404_caching_stale_cache_time', function( $stale_cache_time ) {
     return 2 * DAY_IN_SECONDS; // Set stale cache time to 2 days.
 } );
+
+// Programmatically bypass the cache.
+add_filter( 'wp_404_caching_enabled', '__return_false' );
 ```
 
 ## Changelog
