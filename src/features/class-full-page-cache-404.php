@@ -101,6 +101,10 @@ final class Full_Page_Cache_404 implements Feature {
 			return;
 		}
 
+		if ( ! apply_filters( 'wp_404_caching_enabled', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			return;
+		}
+
 		// Return 404 page cache on template_redirect.
 		add_action( 'template_redirect', [ self::class, 'action__template_redirect' ], 1 );
 
