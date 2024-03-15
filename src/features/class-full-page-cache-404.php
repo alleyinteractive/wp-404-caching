@@ -122,6 +122,10 @@ final class Full_Page_Cache_404 implements Feature {
 	 */
 	public static function action__template_redirect(): void {
 
+		if ( ! apply_filters( 'wp_404_caching_enabled', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			return;
+		}
+
 		// Don't cache if not a 404.
 		if ( ! is_404() ) {
 			return;
