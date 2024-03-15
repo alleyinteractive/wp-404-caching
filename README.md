@@ -7,7 +7,7 @@ A WordPress plugin to provide full page caching for 404 pages, improving perform
 
 - **Contributors**: alleyinteractive
 - **Tags**: alleyinteractive, wp-404-caching
-- **Stable tag**: 1.0.1
+- **Stable tag**: 1.0.2
 
 ## Requirements
 - SSL enabled on the website.

@@ -3,7 +3,7 @@
  * Plugin Name: WP 404 Caching
  * Plugin URI: https://github.com/alleyinteractive/wp-404-caching
  * Description: Full Page Cache for WordPress 404s
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Alley
  * Author URI: https://github.com/alleyinteractive/wp-404-caching
  * Requires at least: 6.3
@@ -16,6 +16,9 @@
  */
 
 namespace Alley\WP\WP_404_Caching;
+
+use Composer\InstalledVersions;
+use function add_action;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -32,8 +35,8 @@ if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 	// to see if the Composer dependencies have been installed in a parent
 	// folder. This is useful for when the plugin is loaded as a Composer
 	// dependency in a larger project.
-	if ( ! class_exists( \Composer\InstalledVersions::class ) ) {
-		\add_action(
+	if ( ! class_exists( InstalledVersions::class ) ) {
+		add_action(
 			'admin_notices',
 			function () {
 				?>
@@ -61,7 +64,7 @@ require_once __DIR__ . '/src/meta.php';
 function main(): void {
 	// This should be an array with keys set to feature classnames and arguments.
 	$features = [
-		// Add initial features here.
+		'Alley\WP\WP_404_Caching\Features\Full_Page_Cache_404' => [],
 	];
 	$features = apply_filters( 'wp_404_caching_features', $features );
 	Feature_Manager::add_features( $features );
