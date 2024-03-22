@@ -86,6 +86,15 @@ final class Full_Page_Cache_404 implements Feature {
 	}
 
 	/**
+	 * Check if caching is enabled.
+	 *
+	 * @return bool
+	 */
+	public static function caching_enabled(): bool {
+		return apply_filters( 'wp_404_caching_enabled', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+	}
+
+	/**
 	 * Boot the feature.
 	 */
 	public function boot(): void {
@@ -98,10 +107,6 @@ final class Full_Page_Cache_404 implements Feature {
 		 * And only boot feature if the site is using SSL.
 		 */
 		if ( ! wp_using_ext_object_cache() || ! is_ssl() ) {
-			return;
-		}
-
-		if ( ! apply_filters( 'wp_404_caching_enabled', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return;
 		}
 
@@ -125,6 +130,10 @@ final class Full_Page_Cache_404 implements Feature {
 	 * Get 404 Page Cache and return early if found.
 	 */
 	public static function action__template_redirect(): void {
+
+		if ( ! self::caching_enabled() ) {
+			return;
+		}
 
 		// Don't cache if not a 404.
 		if ( ! is_404() ) {
@@ -212,6 +221,10 @@ final class Full_Page_Cache_404 implements Feature {
 	 * @global WP_Query $wp_query WordPress database access object.
 	 */
 	public static function action__wp(): void {
+		if ( ! self::caching_enabled() ) {
+			return;
+		}
+
 		if ( isset( $_SERVER['REQUEST_URI'] ) && self::TEMPLATE_GENERATOR_URI === $_SERVER['REQUEST_URI'] ) {
 			global $wp_query;
 
@@ -319,6 +332,10 @@ final class Full_Page_Cache_404 implements Feature {
 	 * Spin up a request to the guaranteed 404 page to populate the cache.
 	 */
 	public static function trigger_404_page_cache(): void {
+		if ( ! self::caching_enabled() ) {
+			return;
+		}
+
 		$url = home_url( self::TEMPLATE_GENERATOR_URI, 'https' );
 
 		// Replace http with https to ensure the styles don't get blocked due to insecure content.
