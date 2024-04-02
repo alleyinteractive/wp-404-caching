@@ -81,7 +81,7 @@ final class FullPageCache404Test extends TestCase {
 	 */
 	public function test_feature_is_disabled_if_object_cache_is_not_in_use(): void {
 
-		if ( ! wp_using_ext_object_cache() ) {
+		if ( wp_using_ext_object_cache() ) {
 			$this->markTestSkipped( 'This test requires that an external object cache is in use.' );
 		}
 
@@ -113,7 +113,7 @@ final class FullPageCache404Test extends TestCase {
 	 */
 	public function test_full_page_cache_404_returns_cache(): void {
 
-		if ( ! wp_using_ext_object_cache() ) {
+		if ( wp_using_ext_object_cache() ) {
 			$this->markTestSkipped( 'This test requires that an external object cache is in use.' );
 		}
 
