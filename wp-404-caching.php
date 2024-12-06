@@ -17,17 +17,13 @@
 
 namespace Alley\WP\WP_404_Caching;
 
+use Alley\WP\WP_404_Caching\Features\Full_Page_Cache_404;
 use Composer\InstalledVersions;
 use function add_action;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-/**
- * Root directory to this plugin.
- */
-define( 'WP_404_CACHING_DIR', __DIR__ );
 
 // Check if Composer is installed (remove if Composer is not required for your plugin).
 if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
@@ -54,19 +50,10 @@ if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/wordpress-autoload.php';
 }
 
-// Load the plugin's main files.
-require_once __DIR__ . '/src/assets.php';
-require_once __DIR__ . '/src/meta.php';
-
 /**
  * Instantiate the plugin.
  */
 function main(): void {
-	// This should be an array with keys set to feature classnames and arguments.
-	$features = [
-		'Alley\WP\WP_404_Caching\Features\Full_Page_Cache_404' => [],
-	];
-	$features = apply_filters( 'wp_404_caching_features', $features );
-	Feature_Manager::add_features( $features );
+	( new Full_Page_Cache_404() )->boot();
 }
 main();

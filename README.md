@@ -1,15 +1,11 @@
 # WP 404 Caching
 
-[![Coding Standards](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/coding-standards.yml)
-[![Testing Suite](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/unit-test.yml/badge.svg)](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/unit-test.yml)
+[![All Pull Request Tests](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/all-pr-tests.yml/badge.svg)](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/all-pr-tests.yml)
 
 A WordPress plugin to provide full page caching for 404 pages, improving performance and reducing server load.
 
-- **Contributors**: alleyinteractive
-- **Tags**: alleyinteractive, wp-404-caching
-- **Stable tag**: 1.0.3
-
 ## Requirements
+
 - SSL enabled on the website.
 - An external object cache setup (e.g., Redis, Memcached).
 - Requires at least: 6.3
@@ -34,6 +30,7 @@ The plugin uses a dual regular/stale caching strategy to minimize cache misses. 
 - Ensures compatibility with analytics by replacing the "guaranteed 404 URI" with the actual requested URI in the cached page
 
 ## Installation
+
 ### Via Composer (recommeded):
 
 You can install the package via composer:

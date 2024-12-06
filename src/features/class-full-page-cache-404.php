@@ -14,7 +14,6 @@ declare( strict_types=1 );
 
 namespace Alley\WP\WP_404_Caching\Features;
 
-use Alley\WP\Types\Feature;
 use WP_Query;
 use function defined;
 use function function_exists;
@@ -22,7 +21,7 @@ use function function_exists;
 /**
  * Full Page Cache for 404s.
  */
-final class Full_Page_Cache_404 implements Feature {
+final class Full_Page_Cache_404 {
 
 	/**
 	 * Cache group.

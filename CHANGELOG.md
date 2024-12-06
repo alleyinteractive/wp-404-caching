@@ -2,8 +2,10 @@
 
 All notable changes to `WP 404 Caching` will be documented in this file.
 
-## 1.0.4 Unpublished
+## 1.1.0
 
+- Drop requirement for `alleyinteractive/wp-type-extensions`.
+- Drop `wp_404_caching_features` filter.
 - Github Action: add support for the memcached service;
 - Github Action: test against PHP 8.3
 

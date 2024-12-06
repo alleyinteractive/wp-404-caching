@@ -249,7 +249,7 @@ final class FullPageCache404Test extends TestCase {
     	<p>esc_html would output: /news/breaking_story/?_ga=2.123456789.123456789.123456789.123456789&amp;_gl=1*123456789*123456789*123456789*1</p>
     </body>
     </html>
-    HTML;
+HTML;
 		$this->assertEquals( $expected_html, $this->feature::prepare_response( $raw_html ) );
 	}
 
@@ -314,7 +314,7 @@ final class FullPageCache404Test extends TestCase {
     	<p>esc_html would output: /wp-404-caching/404-template-generator/?generate=1&amp;uri=1</p>
     </body>
     </html>
-    HTML;
+HTML;
 	}
 
 	/**

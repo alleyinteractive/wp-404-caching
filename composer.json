@@ -16,10 +16,9 @@
     ],
     "require": {
         "php": "^8.1",
-        "alleyinteractive/composer-wordpress-autoloader": "^1.0",
-        "alleyinteractive/wp-type-extensions": "^2.1"
-    },
-    "require-dev": {
+        "alleyinteractive/composer-wordpress-autoloader": "^1.0"
+      },
+      "require-dev": {
         "alleyinteractive/alley-coding-standards": "^2.0",
         "mantle-framework/testkit": "^1.0",
         "szepeviktor/phpstan-wordpress": "^1.1"
