@@ -10,7 +10,7 @@
  * @package Alley\WP\WP_404_Caching
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace Alley\WP\WP_404_Caching\Features;
 
