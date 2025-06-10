@@ -149,22 +149,13 @@ final class Full_Page_Cache_404 {
 			return;
 		}
 
-		echo self::get_cached_response_with_headers(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
-		// If we're testing, don't exit, die instead.
-		if ( defined( 'MANTLE_IS_TESTING' ) && MANTLE_IS_TESTING ) {
-			wp_die( '', '', [ 'response' => 404 ] );
-		}
-
-		exit;
+		self::handle_response_with_headers(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
 	 * Get cached response with headers.
-	 *
-	 * @return string
 	 */
-	public static function get_cached_response_with_headers(): string {
+	protected static function handle_response_with_headers(): void {
 		$stale_cache_in_use = false;
 		$cache              = self::get_cache();
 
@@ -179,7 +170,14 @@ final class Full_Page_Cache_404 {
 			self::send_header( 'HIT', $stale_cache_in_use );
 
 			// Cached content is already escaped.
-			return $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+			// If we're testing, don't exit, die instead.
+			if ( defined( 'MANTLE_IS_TESTING' ) && MANTLE_IS_TESTING ) {
+				wp_die( '', '', [ 'response' => 404 ] );
+			}
+
+			exit;
 		}
 
 		// Schedule a single event to generate the cache immediately.
@@ -188,9 +186,6 @@ final class Full_Page_Cache_404 {
 		}
 
 		self::send_header( 'MISS' );
-
-		// If no cache, return an empty string.
-		return '';
 	}
 
 	/**
@@ -200,7 +195,6 @@ final class Full_Page_Cache_404 {
 	 * @param bool   $stale Whether the stale cache is in use. Default false.
 	 */
 	public static function send_header( string $type, bool $stale = false ): void {
-
 		if ( headers_sent() ) {
 			return;
 		}
