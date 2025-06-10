@@ -2,6 +2,10 @@
 
 All notable changes to `WP 404 Caching` will be documented in this file.
 
+## 1.1.1
+
+- Fix issue with empty 404 page content when cache is not primed.
+
 ## 1.1.0
 
 - Drop requirement for `alleyinteractive/wp-type-extensions`.
