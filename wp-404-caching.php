@@ -3,14 +3,11 @@
  * Plugin Name: WP 404 Caching
  * Plugin URI: https://github.com/alleyinteractive/wp-404-caching
  * Description: Full Page Cache for WordPress 404s
- * Version: 1.0.3
+ * Version: 1.2.0
  * Author: Alley
  * Author URI: https://github.com/alleyinteractive/wp-404-caching
- * Requires at least: 6.3
- * Tested up to: 6.4
- *
- * Text Domain: wp-404-caching
- * Domain Path: /languages/
+ * Requires at least: 6.5
+ * Tested up to: 6.8
  *
  * @package wp-404-caching
  */
