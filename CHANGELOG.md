@@ -2,9 +2,11 @@
 
 All notable changes to `WP 404 Caching` will be documented in this file.
 
-## 1.1.1
+## 1.2.0
 
-- Fix issue with empty 404 page content when cache is not primed.
+- Fix issue where a empty 404 page would be returned when the cache is not yet
+  set. The 404 page will now function normally until the cache is set.
+- Bumped minimum PHP version to 8.2.
 
 ## 1.1.0
 
