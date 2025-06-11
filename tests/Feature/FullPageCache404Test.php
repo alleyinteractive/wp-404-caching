@@ -287,4 +287,15 @@ HTML;
 
 		$this->assertTrue( wp_using_ext_object_cache() );
 	}
+
+	/**
+	 * Test that the cache control header is set correctly.
+	 */
+	public function test_cache_control_header(): void {
+		$this->feature->boot();
+
+		$this->get( '/this-is-a-404-page' )
+			->assertNotFound()
+			->assertHeader( 'Cache-Control', 'public, max-age=' . DAY_IN_SECONDS );
+	}
 }

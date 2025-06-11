@@ -112,6 +112,7 @@ final class Full_Page_Cache_404 {
 
 		add_action( 'template_redirect', [ $this, 'action__template_redirect' ], 1 );
 		add_action( 'wp', [ $this, 'action__wp' ] );
+		add_filter( 'wp_headers', [ $this, 'action__wp_headers' ], 5 ); // Early to allow for easier manipulation at 10.
 
 		// Cron event callbacks.
 		add_action( self::CRON_HOOK, [ self::class, 'trigger_404_page_cache' ] );
@@ -256,6 +257,28 @@ final class Full_Page_Cache_404 {
 				ob_end_flush();
 			}
 		}
+	}
+
+	/**
+	 * Apply a default Cache-Control header the 404 response to help with page caching.
+	 *
+	 * @param array<string, string> $headers The headers to be sent.
+	 * @return array<string, string>
+	 */
+	public function action__wp_headers( $headers ): array {
+		if ( ! is_array( $headers ) ) {
+			$headers = [];
+		}
+
+		if ( ! is_404() || is_user_logged_in() ) {
+			return $headers;
+		}
+
+		if ( ! isset( $headers['Cache-Control'] ) ) {
+			$headers['Cache-Control'] = 'public, max-age=' . DAY_IN_SECONDS;
+		}
+
+		return $headers;
 	}
 
 	/**

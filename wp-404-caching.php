@@ -24,6 +24,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Instantiate the plugin.
  */
 function main(): void {
+	require_once __DIR__ . '/src/features/class-full-page-cache-404.php';
+
 	( new Full_Page_Cache_404() )->boot();
 }
 main();
