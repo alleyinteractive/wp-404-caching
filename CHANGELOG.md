@@ -2,6 +2,10 @@
 
 All notable changes to `WP 404 Caching` will be documented in this file.
 
+## 1.2.1
+
+- Allow cache group to be filtered by a filter.
+
 ## 1.2.0
 
 - Fix issue where a empty 404 page would be returned when the cache is not yet
