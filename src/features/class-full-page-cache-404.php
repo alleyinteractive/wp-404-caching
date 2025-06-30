@@ -1,16 +1,11 @@
 <?php
 /**
- * Class file for Full Page Cache for 404s.
- *
- * (c) Alley <info@alley.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Full_Page_Cache_404 class file
  *
  * @package Alley\WP\WP_404_Caching
  */
 
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace Alley\WP\WP_404_Caching\Features;
 
@@ -68,12 +63,26 @@ final class Full_Page_Cache_404 {
 	public const DEFAULT_STALE_CACHE_TIME = DAY_IN_SECONDS;
 
 	/**
-	 * Guaranteed 404 URI.
-	 * Used for populating the cache.
+	 * Cron hook for replenishing the cache.
+	 *
+	 * @var string
+	 */
+	public const CRON_HOOK = 'wp_404_cache';
+
+	/**
+	 * Guaranteed 404 URI. Used for populating the cache with a consistent URL
+	 * path for search and replacing.
 	 *
 	 * @var string
 	 */
 	public const TEMPLATE_GENERATOR_URI = '/wp-404-caching/404-template-generator/?generate=1&uri=1';
+
+	/**
+	 * Whether output buffering is currently active.
+	 *
+	 * @var int|false
+	 */
+	protected int|false $buffering = false;
 
 	/**
 	 * Get cache time.
@@ -90,7 +99,7 @@ final class Full_Page_Cache_404 {
 	 * @return int
 	 */
 	public static function get_stale_cache_time(): int {
-		return apply_filters( 'wp_404_caching_stale_cache_time', self::DEFAULT_STALE_CACHE_TIME ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		return (int) apply_filters( 'wp_404_caching_stale_cache_time', self::DEFAULT_STALE_CACHE_TIME ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	/**
@@ -99,81 +108,57 @@ final class Full_Page_Cache_404 {
 	 * @return bool
 	 */
 	public static function caching_enabled(): bool {
-		return apply_filters( 'wp_404_caching_enabled', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		return (bool) apply_filters( 'wp_404_caching_enabled', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	/**
 	 * Boot the feature.
 	 */
 	public function boot(): void {
-
-		/**
-		 * Only boot feature if external object cache is being used.
-		 *
-		 * We don't want to store the cached 404 page in the database.
-		 *
-		 * And only boot feature if the site is using SSL.
-		 */
 		if ( ! wp_using_ext_object_cache() || ! is_ssl() ) {
 			return;
 		}
 
-		// Return 404 page cache on template_redirect.
-		add_action( 'template_redirect', [ self::class, 'action__template_redirect' ], 1 );
+		add_action( 'template_redirect', [ $this, 'action__template_redirect' ], 1 );
+		add_action( 'wp', [ $this, 'action__wp' ] );
+		add_filter( 'wp_headers', [ $this, 'action__wp_headers' ], 5 ); // Early to allow for easier manipulation at 10.
 
-		// For the Guaranteed 404 page, hook in on WP to start output buffering, to capture the HTML.
-		add_action( 'wp', [ self::class, 'action__wp' ] );
+		// Cron event callbacks.
+		add_action( self::CRON_HOOK, [ self::class, 'trigger_404_page_cache' ] );
+		add_action( self::CRON_HOOK . '_single', [ self::class, 'trigger_404_page_cache' ] );
 
 		// Replenish the cache every hour.
-		if ( ! wp_next_scheduled( 'wp_404_cache' ) ) {
-			wp_schedule_event( time(), 'hourly', 'wp_404_cache' );
+		if ( ! wp_next_scheduled( self::CRON_HOOK ) ) {
+			wp_schedule_event( time(), 'hourly', self::CRON_HOOK );
 		}
+	}
 
-		// Callback for Cron Event.
-		add_action( 'wp_404_cache', [ self::class, 'trigger_404_page_cache' ] );
-		add_action( 'wp_404_cache_single', [ self::class, 'trigger_404_page_cache' ] );
+	/**
+	 * Fires just before PHP shuts down execution.
+	 */
+	public function action_shutdown(): void {
 	}
 
 	/**
 	 * Get 404 Page Cache and return early if found.
 	 */
-	public static function action__template_redirect(): void {
-
-		if ( ! self::caching_enabled() ) {
+	public function action__template_redirect(): void {
+		if ( ! self::caching_enabled() || ! is_404() || is_user_logged_in() ) {
 			return;
 		}
 
-		// Don't cache if not a 404.
-		if ( ! is_404() ) {
-			return;
-		}
-
-		// Don't cache if user is logged in.
-		if ( is_user_logged_in() ) {
-			return;
-		}
-
-		// Allow this URL through, as this request will populate the cache.
+		// Skip the cache if the request is for the template generator URI.
 		if ( isset( $_SERVER['REQUEST_URI'] ) && self::TEMPLATE_GENERATOR_URI === $_SERVER['REQUEST_URI'] ) {
 			return;
 		}
 
-		echo self::get_cached_response_with_headers(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
-		// If we're testing, don't exit, die instead.
-		if ( defined( 'MANTLE_IS_TESTING' ) && MANTLE_IS_TESTING ) {
-			wp_die( '', '', [ 'response' => 404 ] );
-		}
-
-		exit;
+		self::handle_response_with_headers(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
 	 * Get cached response with headers.
-	 *
-	 * @return string
 	 */
-	public static function get_cached_response_with_headers(): string {
+	protected static function handle_response_with_headers(): void {
 		$stale_cache_in_use = false;
 		$cache              = self::get_cache();
 
@@ -188,18 +173,22 @@ final class Full_Page_Cache_404 {
 			self::send_header( 'HIT', $stale_cache_in_use );
 
 			// Cached content is already escaped.
-			return $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+			// If we're testing, don't exit, die instead.
+			if ( defined( 'MANTLE_IS_TESTING' ) && MANTLE_IS_TESTING ) {
+				wp_die( '', '', [ 'response' => 404 ] );
+			}
+
+			exit;
 		}
 
 		// Schedule a single event to generate the cache immediately.
-		if ( ! wp_next_scheduled( 'wp_404_cache_single' ) ) {
-			wp_schedule_single_event( time(), 'wp_404_cache_single' );
+		if ( ! wp_next_scheduled( self::CRON_HOOK . '_single' ) ) {
+			wp_schedule_single_event( time(), self::CRON_HOOK . '_single' );
 		}
 
 		self::send_header( 'MISS' );
-
-		// If no cache, return an empty string.
-		return '';
 	}
 
 	/**
@@ -209,7 +198,6 @@ final class Full_Page_Cache_404 {
 	 * @param bool   $stale Whether the stale cache is in use. Default false.
 	 */
 	public static function send_header( string $type, bool $stale = false ): void {
-
 		if ( headers_sent() ) {
 			return;
 		}
@@ -228,7 +216,7 @@ final class Full_Page_Cache_404 {
 	 *
 	 * @global WP_Query $wp_query WordPress database access object.
 	 */
-	public static function action__wp(): void {
+	public function action__wp(): void {
 		if ( ! self::caching_enabled() ) {
 			return;
 		}
@@ -240,37 +228,75 @@ final class Full_Page_Cache_404 {
 				return;
 			}
 
-			// Clean up any buffer first.
-			ob_end_clean();
+			$this->buffering = ob_get_level();
 
-			ob_start( [ self::class, 'finish_output_buffering' ] );
+			ob_start( [ $this, 'finish_output_buffering' ] );
+
+			// Hook into shutdown to ensure we flush the buffer and cache the output.
+			add_action( 'shutdown', [ $this, 'action__shutdown' ], 0 ); // Fires before wp_ob_end_flush_all().
 		}
 	}
 
 	/**
 	 * Finish output buffering.
 	 *
-	 * @global WP_Query $wp_query WordPress database access object.
-	 *
 	 * @param string $buffer Buffer.
 	 * @return string
 	 */
-	public static function finish_output_buffering( string $buffer ): string {
+	public function finish_output_buffering( string $buffer ): string {
 		global $wp_query;
 
-		if ( ! $wp_query->is_404() ) {
+		if ( ! $wp_query->is_404() || is_user_logged_in() || empty( $buffer ) ) {
 			return $buffer;
 		}
 
-		if ( is_user_logged_in() ) {
-			return $buffer;
-		}
-
-		if ( ! self::get_cache() && ! empty( $buffer ) ) {
+		if ( ! self::get_cache() ) {
 			self::set_cache( $buffer );
 		}
 
 		return $buffer;
+	}
+
+	/**
+	 * Return the output buffer to the starting level and send the output to the browser.
+	 */
+	public function action__shutdown(): void {
+		if ( $this->buffering !== false ) {
+			while ( ob_get_level() >= $this->buffering ) {
+				ob_end_flush();
+			}
+		}
+	}
+
+	/**
+	 * Apply a default Cache-Control header the 404 response to help with page caching.
+	 *
+	 * @param array<string, string> $headers The headers to be sent.
+	 * @return array<string, string>
+	 */
+	public function action__wp_headers( $headers ): array {
+		if ( ! is_array( $headers ) ) {
+			$headers = [];
+		}
+
+		if ( ! is_404() || is_user_logged_in() ) {
+			return $headers;
+		}
+
+		if ( ! isset( $headers['Cache-Control'] ) ) {
+			$headers['Cache-Control'] = 'public, max-age=' . DAY_IN_SECONDS;
+		}
+
+		return $headers;
+	}
+
+	/**
+	 * Get cache.
+	 *
+	 * @return mixed The cache contents on success, false on failure to retrieve contents.
+	 */
+	public static function get_cache(): mixed {
+		return wp_cache_get( self::CACHE_KEY, self::get_cache_group() );
 	}
 
 	/**
@@ -284,15 +310,6 @@ final class Full_Page_Cache_404 {
 		}
 
 		return self::$cache_group;
-	}
-
-	/**
-	 * Get cache.
-	 *
-	 * @return mixed The cache contents on success, false on failure to retrieve contents.
-	 */
-	public static function get_cache(): mixed {
-		return wp_cache_get( self::CACHE_KEY, self::get_cache_group() );
 	}
 
 	/**
