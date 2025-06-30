@@ -2,6 +2,10 @@
 
 All notable changes to `WP 404 Caching` will be documented in this file.
 
+## 1.1.1
+
+- Allow cache group to be filtered by a filter.
+
 ## 1.1.0
 
 - Drop requirement for `alleyinteractive/wp-type-extensions`.

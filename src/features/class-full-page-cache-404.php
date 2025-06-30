@@ -24,11 +24,20 @@ use function function_exists;
 final class Full_Page_Cache_404 {
 
 	/**
-	 * Cache group.
+	 * Default cache group.
 	 *
 	 * @var string
 	 */
-	public const CACHE_GROUP = 'wp_404_caching';
+	public const DEFAULT_CACHE_GROUP = 'wp_404_caching';
+
+	/**
+	 * Calculated cache group.
+	 *
+	 * Usually the same as the default cache group, but can be modified by filters.
+	 *
+	 * @var string
+	 */
+	protected static string $cache_group;
 
 	/**
 	 * Cache key.
@@ -265,12 +274,25 @@ final class Full_Page_Cache_404 {
 	}
 
 	/**
+	 * Get cache group.
+	 *
+	 * @return string
+	 */
+	protected static function get_cache_group(): string {
+		if ( ! isset( self::$cache_group ) ) {
+			self::$cache_group = (string) apply_filters( 'wp_404_caching_cache_group', self::DEFAULT_CACHE_GROUP );
+		}
+
+		return self::$cache_group;
+	}
+
+	/**
 	 * Get cache.
 	 *
 	 * @return mixed The cache contents on success, false on failure to retrieve contents.
 	 */
 	public static function get_cache(): mixed {
-		return wp_cache_get( self::CACHE_KEY, self::CACHE_GROUP );
+		return wp_cache_get( self::CACHE_KEY, self::get_cache_group() );
 	}
 
 	/**
@@ -279,7 +301,7 @@ final class Full_Page_Cache_404 {
 	 * @return mixed The cache contents on success, false on failure to retrieve contents.
 	 */
 	public static function get_stale_cache(): mixed {
-		return wp_cache_get( self::STALE_CACHE_KEY, self::CACHE_GROUP );
+		return wp_cache_get( self::STALE_CACHE_KEY, self::get_cache_group() );
 	}
 
 	/**
@@ -288,16 +310,16 @@ final class Full_Page_Cache_404 {
 	 * @param string $buffer The Output Buffer.
 	 */
 	public static function set_cache( string $buffer ): void {
-		wp_cache_set( self::CACHE_KEY, $buffer, self::CACHE_GROUP, self::get_cache_time() ); // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.CacheTimeUndetermined
-		wp_cache_set( self::STALE_CACHE_KEY, $buffer, self::CACHE_GROUP, self::get_stale_cache_time() );  // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.CacheTimeUndetermined
+		wp_cache_set( self::CACHE_KEY, $buffer, self::get_cache_group(), self::get_cache_time() ); // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.CacheTimeUndetermined
+		wp_cache_set( self::STALE_CACHE_KEY, $buffer, self::get_cache_group(), self::get_stale_cache_time() );  // phpcs:ignore WordPressVIPMinimum.Performance.LowExpiryCacheTime.CacheTimeUndetermined
 	}
 
 	/**
 	 * Delete cache.
 	 */
 	public static function delete_cache(): void {
-		wp_cache_delete( self::CACHE_KEY, self::CACHE_GROUP );
-		wp_cache_delete( self::STALE_CACHE_KEY, self::CACHE_GROUP );
+		wp_cache_delete( self::CACHE_KEY, self::get_cache_group() );
+		wp_cache_delete( self::STALE_CACHE_KEY, self::get_cache_group() );
 	}
 
 	/**
