@@ -134,12 +134,6 @@ final class Full_Page_Cache_404 {
 	}
 
 	/**
-	 * Fires just before PHP shuts down execution.
-	 */
-	public function action_shutdown(): void {
-	}
-
-	/**
 	 * Get 404 Page Cache and return early if found.
 	 */
 	public function action__template_redirect(): void {
