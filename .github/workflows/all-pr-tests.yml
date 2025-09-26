@@ -5,6 +5,9 @@ on:
     branches:
       - develop
     types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches:
+      - develop
 
 jobs:
   # We use a single job to ensure that all steps run in the same environment and
