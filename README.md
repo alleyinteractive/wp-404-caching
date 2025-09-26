@@ -1,6 +1,6 @@
 # WP 404 Caching
 
-[![All Pull Request Tests](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/all-pr-tests.yml/badge.svg)](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/all-pr-tests.yml)
+[![All Pull Request Tests](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/all-pr-tests.yml/badge.svg?branch=develop)](https://github.com/alleyinteractive/wp-404-caching/actions/workflows/all-pr-tests.yml)
 
 A WordPress plugin to provide full page caching for 404 pages, improving performance and reducing server load.
 
