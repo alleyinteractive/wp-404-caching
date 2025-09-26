@@ -2,6 +2,11 @@
 
 All notable changes to `WP 404 Caching` will be documented in this file.
 
+## 1.3.0
+
+- Only use `wp_remote_get()` to make the request to prime the 404 cache.
+- Add logging if the request to prime the cache fails.
+
 ## 1.2.1
 
 - Allow cache group to be filtered by a filter.

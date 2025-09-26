@@ -374,10 +374,23 @@ final class Full_Page_Cache_404 {
 		$url = str_replace( 'http://', 'https://', $url );
 
 		// This request will populate the cache using output buffering.
-		if ( function_exists( 'wpcom_vip_file_get_contents' ) ) {
-			wpcom_vip_file_get_contents( $url );
-		} else {
-			wp_remote_get( $url ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
+		$request = wp_remote_get( $url ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
+
+		if ( is_wp_error( $request ) || 404 !== wp_remote_retrieve_response_code( $request ) ) {
+			if ( function_exists( 'ai_logger' ) ) {
+				ai_logger( 'wp-404-caching' )->error( 'Failed to populate 404 cache.', [
+					'url'     => $url,
+					'request' => $request,
+				] );
+			} else {
+				error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					sprintf(
+						'WP 404 Caching: Failed to populate 404 cache. URL: %s, Request: %s',
+						$url,
+						print_r( $request, true ), // phpcs:ignore WordPress
+					),
+				);
+			}
 		}
 	}
 }

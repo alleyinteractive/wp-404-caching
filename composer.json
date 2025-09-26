@@ -52,6 +52,7 @@
         "phpcs": "phpcs .",
         "phpunit": "phpunit",
         "phpstan": "phpstan --memory-limit=512M",
+        "release": "npx @alleyinteractive/create-release@latest",
         "test": [
             "@phpcs",
             "@phpstan",
