@@ -1,26 +1,33 @@
 {
     "name": "alleyinteractive/wp-404-caching",
     "description": "Full Page Cache for WordPress 404s",
+    "license": "GPL-2.0-or-later",
     "type": "wordpress-plugin",
     "keywords": [
         "alleyinteractive",
         "wp-404-caching"
     ],
-    "homepage": "https://github.com/alleyinteractive/wp-404-caching",
-    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Alley",
             "email": "info@alley.com"
         }
     ],
+    "homepage": "https://github.com/alleyinteractive/wp-404-caching",
     "require": {
         "php": "^8.2"
-      },
-      "require-dev": {
+    },
+    "require-dev": {
         "alleyinteractive/alley-coding-standards": "^2.0",
         "mantle-framework/testkit": "^1.0",
         "szepeviktor/phpstan-wordpress": "^1.1"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload-dev": {
+        "psr-4": {
+            "Alley\\WP\\WP_404_Caching\\Tests\\": "tests"
+        }
     },
     "config": {
         "allow-plugins": {
@@ -29,11 +36,6 @@
             "pestphp/pest-plugin": true
         },
         "sort-packages": true
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Alley\\WP\\WP_404_Caching\\Tests\\": "tests"
-        }
     },
     "extra": {
         "wordpress-autoloader": {
@@ -45,13 +47,11 @@
             }
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "phpcbf": "phpcbf .",
         "phpcs": "phpcs .",
-        "phpunit": "phpunit",
         "phpstan": "phpstan --memory-limit=512M",
+        "phpunit": "phpunit",
         "release": "npx @alleyinteractive/create-release@latest",
         "test": [
             "@phpcs",
