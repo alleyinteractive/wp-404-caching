@@ -7,7 +7,7 @@
  * Author: Alley
  * Author URI: https://github.com/alleyinteractive/wp-404-caching
  * Requires at least: 6.5
- * Tested up to: 6.8
+ * Tested up to: 7.0
  *
  * @package wp-404-caching
  */
