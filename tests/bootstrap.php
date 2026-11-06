@@ -7,6 +7,8 @@
  * @package wp-404-caching
  */
 
+declare(strict_types=1);
+
 /**
  * Visit {@see https://mantle.alley.com/testing/test-framework.html} to learn more.
  */

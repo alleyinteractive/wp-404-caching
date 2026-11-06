@@ -8,9 +8,9 @@ A WordPress plugin to provide full page caching for 404 pages, improving perform
 
 - SSL enabled on the website.
 - An external object cache setup (e.g., Redis, Memcached).
-- Requires at least: 6.3
-- Tested up to: 6.4
-- Requires PHP: 8.1
+- Requires at least: 6.5
+- Tested up to: 7.1
+- Requires PHP: 8.4
 - License: GPL v2 or later
 
 ## Description

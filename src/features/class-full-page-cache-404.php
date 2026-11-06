@@ -20,10 +20,8 @@ final class Full_Page_Cache_404 {
 
 	/**
 	 * Default cache group.
-	 *
-	 * @var string
 	 */
-	public const DEFAULT_CACHE_GROUP = 'wp_404_caching';
+	public const string DEFAULT_CACHE_GROUP = 'wp_404_caching';
 
 	/**
 	 * Calculated cache group.
@@ -36,17 +34,13 @@ final class Full_Page_Cache_404 {
 
 	/**
 	 * Cache key.
-	 *
-	 * @var string
 	 */
-	public const CACHE_KEY = '404_cache';
+	public const string CACHE_KEY = '404_cache';
 
 	/**
 	 * Cache key for stale cache.
-	 *
-	 * @var string
 	 */
-	public const STALE_CACHE_KEY = '404_cache_stale';
+	public const string STALE_CACHE_KEY = '404_cache_stale';
 
 	/**
 	 * Cache time.
@@ -64,18 +58,14 @@ final class Full_Page_Cache_404 {
 
 	/**
 	 * Cron hook for replenishing the cache.
-	 *
-	 * @var string
 	 */
-	public const CRON_HOOK = 'wp_404_cache';
+	public const string CRON_HOOK = 'wp_404_cache';
 
 	/**
 	 * Guaranteed 404 URI. Used for populating the cache with a consistent URL
 	 * path for search and replacing.
-	 *
-	 * @var string
 	 */
-	public const TEMPLATE_GENERATOR_URI = '/wp-404-caching/404-template-generator/?generate=1&uri=1';
+	public const string TEMPLATE_GENERATOR_URI = '/wp-404-caching/404-template-generator/?generate=1&uri=1';
 
 	/**
 	 * Whether output buffering is currently active.
@@ -90,7 +80,9 @@ final class Full_Page_Cache_404 {
 	 * @return int
 	 */
 	public static function get_cache_time(): int {
-		return apply_filters( 'wp_404_caching_cache_time', self::DEFAULT_CACHE_TIME ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$time = apply_filters( 'wp_404_caching_cache_time', self::DEFAULT_CACHE_TIME ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+		return is_numeric( $time ) ? (int) $time : self::DEFAULT_CACHE_TIME;
 	}
 
 	/**
@@ -99,7 +91,9 @@ final class Full_Page_Cache_404 {
 	 * @return int
 	 */
 	public static function get_stale_cache_time(): int {
-		return (int) apply_filters( 'wp_404_caching_stale_cache_time', self::DEFAULT_STALE_CACHE_TIME ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$time = apply_filters( 'wp_404_caching_stale_cache_time', self::DEFAULT_STALE_CACHE_TIME ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+		return is_numeric( $time ) ? (int) $time : self::DEFAULT_STALE_CACHE_TIME;
 	}
 
 	/**
@@ -218,7 +212,7 @@ final class Full_Page_Cache_404 {
 		if ( isset( $_SERVER['REQUEST_URI'] ) && self::TEMPLATE_GENERATOR_URI === $_SERVER['REQUEST_URI'] ) {
 			global $wp_query;
 
-			if ( ! $wp_query->is_404() ) {
+			if ( ! $wp_query instanceof WP_Query || ! $wp_query->is_404() ) {
 				return;
 			}
 
@@ -240,7 +234,7 @@ final class Full_Page_Cache_404 {
 	public function finish_output_buffering( string $buffer ): string {
 		global $wp_query;
 
-		if ( ! $wp_query->is_404() || is_user_logged_in() || empty( $buffer ) ) {
+		if ( ! $wp_query instanceof WP_Query || ! $wp_query->is_404() || is_user_logged_in() || empty( $buffer ) ) {
 			return $buffer;
 		}
 
@@ -265,8 +259,8 @@ final class Full_Page_Cache_404 {
 	/**
 	 * Apply a default Cache-Control header the 404 response to help with page caching.
 	 *
-	 * @param array<string, string> $headers The headers to be sent.
-	 * @return array<string, string>
+	 * @param mixed $headers The headers to be sent.
+	 * @return array<mixed>
 	 */
 	public function action__wp_headers( $headers ): array {
 		if ( ! is_array( $headers ) ) {
@@ -277,9 +271,7 @@ final class Full_Page_Cache_404 {
 			return $headers;
 		}
 
-		if ( ! isset( $headers['Cache-Control'] ) ) {
-			$headers['Cache-Control'] = 'public, max-age=' . DAY_IN_SECONDS;
-		}
+		$headers['Cache-Control'] ??= 'public, max-age=' . DAY_IN_SECONDS;
 
 		return $headers;
 	}
@@ -300,7 +292,9 @@ final class Full_Page_Cache_404 {
 	 */
 	protected static function get_cache_group(): string {
 		if ( ! isset( self::$cache_group ) ) {
-			self::$cache_group = (string) apply_filters( 'wp_404_caching_cache_group', self::DEFAULT_CACHE_GROUP );
+			$group = apply_filters( 'wp_404_caching_cache_group', self::DEFAULT_CACHE_GROUP );
+
+			self::$cache_group = is_string( $group ) ? $group : self::DEFAULT_CACHE_GROUP;
 		}
 
 		return self::$cache_group;
@@ -341,18 +335,18 @@ final class Full_Page_Cache_404 {
 	 */
 	public static function prepare_response( string $content ): string {
 		// To avoid analytics issues, replace the Generator URI with the requested URI.
-		$uri = sanitize_text_field( $_SERVER['REQUEST_URI'] ?? '' );
+		$uri = isset( $_SERVER['REQUEST_URI'] ) && is_string( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER['REQUEST_URI'] ) : '';
 
 		return str_replace(
 			[
 				self::TEMPLATE_GENERATOR_URI,
-				wp_json_encode( self::TEMPLATE_GENERATOR_URI ),
+				(string) wp_json_encode( self::TEMPLATE_GENERATOR_URI ),
 				esc_html( self::TEMPLATE_GENERATOR_URI ),
 				esc_url( self::TEMPLATE_GENERATOR_URI ),
 			],
 			[
 				$uri,
-				wp_json_encode( $uri ),
+				(string) wp_json_encode( $uri ),
 				esc_html( $uri ),
 				esc_url( $uri ),
 			],
@@ -377,8 +371,10 @@ final class Full_Page_Cache_404 {
 		$request = wp_remote_get( $url ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
 
 		if ( is_wp_error( $request ) || 404 !== wp_remote_retrieve_response_code( $request ) ) {
-			if ( function_exists( 'ai_logger' ) ) {
-				ai_logger( 'wp-404-caching' )->error( 'Failed to populate 404 cache.', [
+			$logger = function_exists( 'ai_logger' ) ? ai_logger( 'wp-404-caching' ) : null;
+
+			if ( is_object( $logger ) && method_exists( $logger, 'error' ) ) {
+				$logger->error( 'Failed to populate 404 cache.', [
 					'url'     => $url,
 					'request' => $request,
 				] );
