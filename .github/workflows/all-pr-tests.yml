@@ -44,6 +44,8 @@ jobs:
           php-version: '${{ matrix.php }}'
           wordpress-version: '${{ matrix.wordpress }}'
           skip-wordpress-install: 'true'
+          # The plugin has no runtime Composer packages, so the default --no-dev audit errors with nothing to check.
+          audit-command: 'composer audit --locked --ansi --no-interaction'
   # This required job ensures that all PR checks have passed before merging.
   all-pr-checks-passed:
     name: All PR checks passed
