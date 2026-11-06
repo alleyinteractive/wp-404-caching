@@ -15,12 +15,13 @@
     ],
     "homepage": "https://github.com/alleyinteractive/wp-404-caching",
     "require": {
-        "php": "^8.2"
+        "php": "^8.4"
     },
     "require-dev": {
-        "alleyinteractive/alley-coding-standards": "^2.0",
-        "mantle-framework/testkit": "^1.0",
-        "szepeviktor/phpstan-wordpress": "^1.1"
+        "alleyinteractive/alley-coding-standards": "^2.6",
+        "mantle-framework/testkit": "^1.22",
+        "rector/rector": "^2.8",
+        "szepeviktor/phpstan-wordpress": "^2.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -51,11 +52,21 @@
         "phpcbf": "phpcbf .",
         "phpcs": "phpcs .",
         "phpstan": "phpstan --memory-limit=512M",
-        "phpunit": "phpunit",
-        "release": "npx @alleyinteractive/create-release@latest",
-        "test": [
+        "lint": [
             "@phpcs",
             "@phpstan",
+            "@rector"
+        ],
+        "lint:fix": [
+            "@rector:fix",
+            "@phpcbf"
+        ],
+        "phpunit": "phpunit",
+        "rector:fix": "rector process",
+        "rector": "rector process --dry-run",
+        "release": "npx @alleyinteractive/create-release@latest",
+        "test": [
+            "@lint",
             "@phpunit"
         ]
     }
