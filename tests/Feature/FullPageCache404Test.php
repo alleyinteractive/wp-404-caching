@@ -110,7 +110,7 @@ final class FullPageCache404Test extends TestCase {
 			->assertContains( '404' );
 
 		// Expect the cache NOT to be returned.
-		$this->assertNotEquals( self::get_404_html(), $response->get_content() );
+		$this->assertNotEquals( $this->get_404_html(), $response->get_content() );
 
 		// Ensure the cron job is not scheduled for logged in users.
 		$this->assertNotInCronQueue( Full_Page_Cache_404::CRON_HOOK . '_single' );
@@ -123,7 +123,7 @@ final class FullPageCache404Test extends TestCase {
 			->assertContains( '404' );
 
 		// Expect the cache NOT to be returned.
-		$this->assertNotEquals( self::get_404_html(), $response->get_content() );
+		$this->assertNotEquals( $this->get_404_html(), $response->get_content() );
 	}
 
 	/**
@@ -196,7 +196,7 @@ final class FullPageCache404Test extends TestCase {
 		$this->fake_request()
 			->with_status( 404 )
 			->with_header( 'Content-Type', 'text/html; charset=UTF-8' )
-			->with_body( self::get_404_html() );
+			->with_body( $this->get_404_html() );
 
 		$this->feature->boot();
 
@@ -219,9 +219,9 @@ final class FullPageCache404Test extends TestCase {
 	 *
 	 * @return string
 	 */
-	private static function get_404_html(): string {
+	private function get_404_html(): string {
 		// phpcs:ignore Generic.WhiteSpace.ScopeIndent.Incorrect
-		return <<<HTML
+		return <<<'HTML'
     <html>
     <head>
     	<title>Cached 404 Not Found</title>

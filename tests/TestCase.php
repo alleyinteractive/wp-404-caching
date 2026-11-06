@@ -5,6 +5,8 @@
  * @package wp-404-caching
  */
 
+declare(strict_types=1);
+
 namespace Alley\WP\WP_404_Caching\Tests;
 
 use Mantle\Testkit\Test_Case as TestkitTest_Case;
